@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Funciones Trigonométricas - Aprende Matemáticas</title>
+  <!-- Para usar offline, reemplaza la línea de arriba con: -->
+  <!-- <script src="chart.min.js"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
   <style>
     /* Reset básico y variables CSS */
@@ -834,4 +836,182 @@
       }
 
       // Generar datos para coseno
-      const
+      const cosineData = [];
+      for (let x = start; x <= end; x += step) {
+        const y = amplitude * Math.cos(frequency * x + phase) + verticalShift;
+        cosineData.push({x: x, y: y});
+      }
+
+      // Generar datos para tangente (con manejo de asíntotas)
+      const tangentData = [];
+      for (let x = start; x <= end; x += step) {
+        const tanValue = amplitude * Math.tan(frequency * x + phase) + verticalShift;
+
+        // Evitar valores infinitos cerca de las asíntotas
+        if (Math.abs(tanValue) < 10) {
+          tangentData.push({x: x, y: tanValue});
+        } else {
+          // Crear una discontinuidad en la gráfica
+          tangentData.push({x: x, y: null});
+        }
+      }
+
+      // Actualizar las gráficas
+      sineChart.data.datasets[0].data = sineData;
+      sineChart.update('none');
+
+      cosineChart.data.datasets[0].data = cosineData;
+      cosineChart.update('none');
+
+      tangentChart.data.datasets[0].data = tangentData;
+      tangentChart.update('none');
+    }
+
+    // === FUNCIONES DE UTILIDAD ===
+
+    // Formatear números para mostrar
+    function formatNumber(num, decimals = 2) {
+      return Number(num).toFixed(decimals);
+    }
+
+    // Convertir radianes a grados
+    function radToDeg(rad) {
+      return rad * 180 / Math.PI;
+    }
+
+    // Convertir grados a radianes
+    function degToRad(deg) {
+      return deg * Math.PI / 180;
+    }
+
+    // Función para animar el ángulo (opcional - se puede usar para demostraciones)
+    function animateAngle(targetAngle, duration = 1000) {
+      const startAngle = currentAngle;
+      const startTime = performance.now();
+
+      function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Usar easing suave
+        const easeProgress = 1 - Math.cos(progress * Math.PI / 2);
+
+        currentAngle = startAngle + (targetAngle - startAngle) * easeProgress;
+
+        // Actualizar slider y displays
+        document.getElementById('angleSlider').value = currentAngle;
+        updateAllDisplays();
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // Agregar algunos ángulos especiales como botones de acceso rápido
+    function addQuickAngleButtons() {
+      const specialAngles = [
+        {name: '0°', value: 0},
+        {name: '30°', value: 30},
+        {name: '45°', value: 45},
+        {name: '60°', value: 60},
+        {name: '90°', value: 90},
+        {name: '180°', value: 180},
+        {name: '270°', value: 270}
+      ];
+
+      // Esta función se puede usar para agregar botones de ángulos especiales
+      // en futuras versiones de la página
+    }
+
+    // === EVENTOS ADICIONALES ===
+
+    // Manejo de eventos de teclado para controles más precisos
+    document.addEventListener('keydown', function (e) {
+      if (e.target.tagName.toLowerCase() === 'input') {
+        return; // No interferir con la entrada en sliders
+      }
+
+      switch (e.key) {
+        case 'ArrowLeft':
+          currentAngle = (currentAngle - 5 + 360) % 360;
+          document.getElementById('angleSlider').value = currentAngle;
+          updateAllDisplays();
+          e.preventDefault();
+          break;
+        case 'ArrowRight':
+          currentAngle = (currentAngle + 5) % 360;
+          document.getElementById('angleSlider').value = currentAngle;
+          updateAllDisplays();
+          e.preventDefault();
+          break;
+      }
+    });
+
+    // Soporte para dispositivos táctiles
+    canvas.addEventListener('touchstart', function (e) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const mouseEvent = new MouseEvent('mousedown', {
+        clientX: touch.clientX,
+        clientY: touch.clientY
+      });
+      canvas.dispatchEvent(mouseEvent);
+    });
+
+    canvas.addEventListener('touchmove', function (e) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const mouseEvent = new MouseEvent('mousemove', {
+        clientX: touch.clientX,
+        clientY: touch.clientY
+      });
+      canvas.dispatchEvent(mouseEvent);
+    });
+
+    canvas.addEventListener('touchend', function (e) {
+      e.preventDefault();
+      const mouseEvent = new MouseEvent('mouseup', {});
+      canvas.dispatchEvent(mouseEvent);
+    });
+
+    // Optimización de rendimiento - throttle para actualizaciones de gráficas
+    function throttle(func, limit) {
+      let inThrottle;
+      return function () {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+          func.apply(context, args);
+          inThrottle = true;
+          setTimeout(() => inThrottle = false, limit);
+        }
+      }
+    }
+
+    // Aplicar throttling a las actualizaciones de gráficas para mejor rendimiento
+    const throttledUpdateCharts = throttle(updateCharts, 50);
+
+    // Mensaje de bienvenida en consola para desarrolladores
+    console.log(`
+        🎓 Página Educativa de Funciones Trigonométricas
+        ===============================================
+        
+        Esta página fue creada para enseñar conceptos de trigonometría
+        de manera interactiva y visual.
+        
+        Características:
+        • Círculo trigonométrico interactivo
+        • Gráficas dinámicas con Chart.js
+        • Controles deslizantes para transformaciones
+        • Diseño responsivo y accesible
+        • Ejemplos de aplicaciones en la vida real
+        
+        ¡Explora y aprende matemáticas!
+        `);
+  </script>
+</body>
+
+</html>
