@@ -1,505 +1,115 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patrones Matemáticos Interactivos</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 30px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .header h1 {
-            color: #4a5568;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .intro-examples {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .example {
-            background: #f7fafc;
-            padding: 20px;
-            border-radius: 15px;
-            border-left: 5px solid #4299e1;
-        }
-
-        .example h3 {
-            color: #2d3748;
-            margin-bottom: 10px;
-        }
-
-        .example-pattern {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #4299e1;
-            margin: 10px 0;
-        }
-
-        .interactive-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            color: #2d3748;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .pattern-type {
-            margin-bottom: 40px;
-            padding: 20px;
-            border: 2px solid #e2e8f0;
-            border-radius: 15px;
-            background: #f8fafc;
-        }
-
-        .controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 20px;
-            align-items: center;
-        }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .control-group label {
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #4a5568;
-        }
-
-        .slider {
-            width: 150px;
-            height: 6px;
-            border-radius: 5px;
-            background: #e2e8f0;
-            outline: none;
-            opacity: 0.7;
-            transition: opacity 0.2s;
-        }
-
-        .slider:hover {
-            opacity: 1;
-        }
-
-        .slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #4299e1;
-            cursor: pointer;
-        }
-
-        .slider::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #4299e1;
-            cursor: pointer;
-            border: none;
-        }
-
-        .value-display {
-            background: #4299e1;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-
-        .pattern-display {
-            min-height: 100px;
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            border: 2px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .number-item {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            animation: fadeInScale 0.5s ease-out;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .shape-item {
-            animation: fadeInScale 0.5s ease-out;
-            margin: 5px;
-        }
-
-        .triangle {
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-bottom: 35px solid;
-        }
-
-        .square {
-            border-radius: 8px;
-        }
-
-        .circle {
-            border-radius: 50%;
-        }
-
-        .step-indicator {
-            text-align: center;
-            margin: 15px 0;
-            font-weight: bold;
-            color: #4a5568;
-        }
-
-        .rule-explanation {
-            background: #e6fffa;
-            border-left: 4px solid #38b2ac;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 8px;
-        }
-
-        .rule-explanation strong {
-            color: #234e52;
-        }
-
-        @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .pattern-animation {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .controls {
-                justify-content: center;
-            }
-            
-            .pattern-display {
-                min-height: 80px;
-                padding: 15px;
-            }
-            
-            .number-item {
-                font-size: 1rem;
-                padding: 8px 12px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patrones Matemáticos Interactivos</title>
+  <link rel="stylesheet" type="" href="style.css">
 </head>
+
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Patrones Matemáticos</h1>
-            <p>Descubre las regularidades en números y figuras de forma interactiva</p>
-            
-            <div class="intro-examples">
-                <div class="example">
-                    <h3>Patrón Numérico</h3>
-                    <p>Los números siguen una regla fija</p>
-                    <div class="example-pattern">2, 4, 6, 8, 10...</div>
-                    <p><strong>Regla:</strong> Sumar 2 cada vez</p>
-                </div>
-                
-                <div class="example">
-                    <h3>Patrón Geométrico</h3>
-                    <p>Las figuras se repiten o crecen</p>
-                    <div class="example-pattern">▲ ● ▲ ● ▲ ●</div>
-                    <p><strong>Regla:</strong> Alternar triángulo y círculo</p>
-                </div>
-            </div>
+  <div class="container">
+    <div class="header">
+      <h1>Patrones Matemáticos</h1>
+      <p>Descubre las regularidades en números y figuras de forma interactiva</p>
+
+      <div class="intro-examples">
+        <div class="example">
+          <h3>Patrón Numérico</h3>
+          <p>Los números siguen una regla fija</p>
+          <div class="example-pattern">2, 4, 6, 8, 10...</div>
+          <p><strong>Regla:</strong> Sumar 2 cada vez</p>
         </div>
 
-        <div class="interactive-section">
-            <h2 class="section-title">Explora Patrones Numéricos</h2>
-            
-            <div class="pattern-type">
-                <h3>Secuencias Aritméticas</h3>
-                <p>Cada término se obtiene sumando un valor fijo al anterior</p>
-                
-                <div class="controls">
-                    <div class="control-group">
-                        <label>Primer número:</label>
-                        <input type="range" class="slider" id="startNum" min="1" max="20" value="2">
-                        <div class="value-display" id="startNumValue">2</div>
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Sumar cada vez:</label>
-                        <input type="range" class="slider" id="stepNum" min="1" max="10" value="3">
-                        <div class="value-display" id="stepNumValue">3</div>
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Cantidad de términos:</label>
-                        <input type="range" class="slider" id="countNum" min="3" max="15" value="8">
-                        <div class="value-display" id="countNumValue">8</div>
-                    </div>
-                </div>
-                
-                <div class="rule-explanation" id="numericRule">
-                    <strong>Regla actual:</strong> Empezar en 2, sumar 3 cada vez
-                </div>
-                
-                <div class="pattern-display" id="numericPattern"></div>
-                
-                <div class="step-indicator" id="numericStep"></div>
-            </div>
+        <div class="example">
+          <h3>Patrón Geométrico</h3>
+          <p>Las figuras se repiten o crecen</p>
+          <div class="example-pattern">▲ ● ▲ ● ▲ ●</div>
+          <p><strong>Regla:</strong> Alternar triángulo y círculo</p>
         </div>
-
-        <div class="interactive-section">
-            <h2 class="section-title">Explora Patrones Geométricos</h2>
-            
-            <div class="pattern-type">
-                <h3>Secuencias de Figuras</h3>
-                <p>Las figuras siguen un patrón de repetición o crecimiento</p>
-                
-                <div class="controls">
-                    <div class="control-group">
-                        <label>Tipo de patrón:</label>
-                        <select id="shapeType" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
-                            <option value="alternating">Alternado</option>
-                            <option value="growing">Creciente</option>
-                            <option value="repeating">Repetición de 3</option>
-                        </select>
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Tamaño base:</label>
-                        <input type="range" class="slider" id="shapeSize" min="20" max="60" value="30">
-                        <div class="value-display" id="shapeSizeValue">30</div>
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Cantidad de figuras:</label>
-                        <input type="range" class="slider" id="shapeCount" min="4" max="20" value="12">
-                        <div class="value-display" id="shapeCountValue">12</div>
-                    </div>
-                </div>
-                
-                <div class="rule-explanation" id="geometricRule">
-                    <strong>Regla actual:</strong> Alternar entre triángulo y círculo
-                </div>
-                
-                <div class="pattern-display" id="geometricPattern"></div>
-                
-                <div class="step-indicator" id="geometricStep"></div>
-            </div>
-        </div>
+      </div>
     </div>
 
-    <script>
-        // Elementos del DOM
-        const startNumSlider = document.getElementById('startNum');
-        const stepNumSlider = document.getElementById('stepNum');
-        const countNumSlider = document.getElementById('countNum');
-        const startNumValue = document.getElementById('startNumValue');
-        const stepNumValue = document.getElementById('stepNumValue');
-        const countNumValue = document.getElementById('countNumValue');
-        const numericPattern = document.getElementById('numericPattern');
-        const numericRule = document.getElementById('numericRule');
-        const numericStep = document.getElementById('numericStep');
+    <div class="interactive-section">
+      <h2 class="section-title">Explora Patrones Numéricos</h2>
 
-        const shapeTypeSelect = document.getElementById('shapeType');
-        const shapeSizeSlider = document.getElementById('shapeSize');
-        const shapeCountSlider = document.getElementById('shapeCount');
-        const shapeSizeValue = document.getElementById('shapeSizeValue');
-        const shapeCountValue = document.getElementById('shapeCountValue');
-        const geometricPattern = document.getElementById('geometricPattern');
-        const geometricRule = document.getElementById('geometricRule');
-        const geometricStep = document.getElementById('geometricStep');
+      <div class="pattern-type">
+        <h3>Secuencias Aritméticas</h3>
+        <p>Cada término se obtiene sumando un valor fijo al anterior</p>
 
-        // Colores para las figuras
-        const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57', '#FF9FF3', '#54A0FF'];
+        <div class="controls">
+          <div class="control-group">
+            <label>Primer número:</label>
+            <input type="range" class="slider" id="startNum" min="1" max="20" value="2">
+            <div class="value-display" id="startNumValue">2</div>
+          </div>
 
-        // Función para generar patrón numérico
-        function generateNumericPattern() {
-            const start = parseInt(startNumSlider.value);
-            const step = parseInt(stepNumSlider.value);
-            const count = parseInt(countNumSlider.value);
+          <div class="control-group">
+            <label>Sumar cada vez:</label>
+            <input type="range" class="slider" id="stepNum" min="1" max="10" value="3">
+            <div class="value-display" id="stepNumValue">3</div>
+          </div>
 
-            // Actualizar valores mostrados
-            startNumValue.textContent = start;
-            stepNumValue.textContent = step;
-            countNumValue.textContent = count;
+          <div class="control-group">
+            <label>Cantidad de términos:</label>
+            <input type="range" class="slider" id="countNum" min="3" max="15" value="8">
+            <div class="value-display" id="countNumValue">8</div>
+          </div>
+        </div>
 
-            // Actualizar regla
-            numericRule.innerHTML = `<strong>Regla actual:</strong> Empezar en ${start}, sumar ${step} cada vez`;
+        <div class="rule-explanation" id="numericRule">
+          <strong>Regla actual:</strong> Empezar en 2, sumar 3 cada vez
+        </div>
 
-            // Limpiar patrón anterior
-            numericPattern.innerHTML = '';
+        <div class="pattern-display" id="numericPattern"></div>
 
-            // Generar secuencia
-            for (let i = 0; i < count; i++) {
-                const value = start + (i * step);
-                const numberElement = document.createElement('div');
-                numberElement.className = 'number-item';
-                numberElement.textContent = value;
-                numberElement.style.animationDelay = `${i * 0.1}s`;
-                numericPattern.appendChild(numberElement);
+        <div class="step-indicator" id="numericStep"></div>
+      </div>
+    </div>
 
-                // Pequeña pausa para la animación
-                setTimeout(() => {
-                    numberElement.classList.add('pattern-animation');
-                }, i * 100);
-            }
+    <div class="interactive-section">
+      <h2 class="section-title">Explora Patrones Geométricos</h2>
 
-            // Mostrar paso de crecimiento
-            numericStep.textContent = `Paso de crecimiento: +${step} en cada término`;
-        }
+      <div class="pattern-type">
+        <h3>Secuencias de Figuras</h3>
+        <p>Las figuras siguen un patrón de repetición o crecimiento</p>
 
-        // Función para generar patrón geométrico
-        function generateGeometricPattern() {
-            const type = shapeTypeSelect.value;
-            const size = parseInt(shapeSizeSlider.value);
-            const count = parseInt(shapeCountSlider.value);
+        <div class="controls">
+          <div class="control-group">
+            <label>Tipo de patrón:</label>
+            <select id="shapeType" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+              <option value="alternating">Alternado</option>
+              <option value="growing">Creciente</option>
+              <option value="repeating">Repetición de 3</option>
+            </select>
+          </div>
 
-            // Actualizar valores mostrados
-            shapeSizeValue.textContent = size;
-            shapeCountValue.textContent = count;
+          <div class="control-group">
+            <label>Tamaño base:</label>
+            <input type="range" class="slider" id="shapeSize" min="20" max="60" value="30">
+            <div class="value-display" id="shapeSizeValue">30</div>
+          </div>
 
-            // Limpiar patrón anterior
-            geometricPattern.innerHTML = '';
+          <div class="control-group">
+            <label>Cantidad de figuras:</label>
+            <input type="range" class="slider" id="shapeCount" min="4" max="20" value="12">
+            <div class="value-display" id="shapeCountValue">12</div>
+          </div>
+        </div>
 
-            let ruleText = '';
-            let stepText = '';
+        <div class="rule-explanation" id="geometricRule">
+          <strong>Regla actual:</strong> Alternar entre triángulo y círculo
+        </div>
 
-            for (let i = 0; i < count; i++) {
-                const shapeElement = document.createElement('div');
-                shapeElement.className = 'shape-item';
-                shapeElement.style.animationDelay = `${i * 0.1}s`;
+        <div class="pattern-display" id="geometricPattern"></div>
 
-                if (type === 'alternating') {
-                    // Alternar triángulo y círculo
-                    if (i % 2 === 0) {
-                        shapeElement.innerHTML = `<div class="triangle" style="border-bottom-color: ${colors[i % colors.length]}; transform: scale(${size/30});"></div>`;
-                    } else {
-                        shapeElement.innerHTML = `<div class="circle" style="width: ${size}px; height: ${size}px; background: ${colors[i % colors.length]};"></div>`;
-                    }
-                    ruleText = 'Alternar entre triángulo y círculo con colores diferentes';
-                    stepText = 'Patrón: ▲ ● ▲ ● ...';
-                } else if (type === 'growing') {
-                    // Cuadrados que crecen
-                    const currentSize = size + (i * 5);
-                    shapeElement.innerHTML = `<div class="square" style="width: ${currentSize}px; height: ${currentSize}px; background: ${colors[i % colors.length]};"></div>`;
-                    ruleText = 'Cuadrados que aumentan de tamaño progresivamente';
-                    stepText = `Crecimiento: +5px en cada figura`;
-                } else if (type === 'repeating') {
-                    // Repetir secuencia de 3
-                    const shapes = ['triangle', 'circle', 'square'];
-                    const shapeType = shapes[i % 3];
-                    const color = colors[Math.floor(i/3) % colors.length];
-                    
-                    if (shapeType === 'triangle') {
-                        shapeElement.innerHTML = `<div class="triangle" style="border-bottom-color: ${color}; transform: scale(${size/30});"></div>`;
-                    } else if (shapeType === 'circle') {
-                        shapeElement.innerHTML = `<div class="circle" style="width: ${size}px; height: ${size}px; background: ${color};"></div>`;
-                    } else {
-                        shapeElement.innerHTML = `<div class="square" style="width: ${size}px; height: ${size}px; background: ${color};"></div>`;
-                    }
-                    ruleText = 'Repetir secuencia: triángulo, círculo, cuadrado';
-                    stepText = 'Patrón: ▲ ● ■ ▲ ● ■ ...';
-                }
+        <div class="step-indicator" id="geometricStep"></div>
+      </div>
+    </div>
+  </div>
 
-                geometricPattern.appendChild(shapeElement);
-
-                // Pequeña pausa para la animación
-                setTimeout(() => {
-                    shapeElement.classList.add('pattern-animation');
-                }, i * 100);
-            }
-
-            // Actualizar regla y paso
-            geometricRule.innerHTML = `<strong>Regla actual:</strong> ${ruleText}`;
-            geometricStep.textContent = stepText;
-        }
-
-        // Event listeners para patrones numéricos
-        startNumSlider.addEventListener('input', generateNumericPattern);
-        stepNumSlider.addEventListener('input', generateNumericPattern);
-        countNumSlider.addEventListener('input', generateNumericPattern);
-
-        // Event listeners para patrones geométricos
-        shapeTypeSelect.addEventListener('change', generateGeometricPattern);
-        shapeSizeSlider.addEventListener('input', generateGeometricPattern);
-        shapeCountSlider.addEventListener('input', generateGeometricPattern);
-
-        // Generar patrones iniciales
-        generateNumericPattern();
-        generateGeometricPattern();
-    </script>
+  <script src="main.js"></script>
 </body>
+
 </html>
