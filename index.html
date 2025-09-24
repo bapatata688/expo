@@ -1,1018 +1,505 @@
-
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Funciones Trigonométricas - Aprende Matemáticas</title>
-  <!-- Para usar offline, reemplaza la línea de arriba con: -->
-  <!-- <script src="chart.min.js"></script> -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-  <style>
-    /* Reset básico y variables CSS */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --primary-blue: #2563eb;
-      --secondary-green: #10b981;
-      --light-blue: #dbeafe;
-      --dark-blue: #1e40af;
-      --gray-100: #f3f4f6;
-      --gray-200: #e5e7eb;
-      --gray-800: #1f2937;
-      --white: #ffffff;
-    }
-
-    /* Estilos generales */
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      line-height: 1.6;
-      color: var(--gray-800);
-      background: linear-gradient(135deg, var(--light-blue) 0%, var(--white) 100%);
-      min-height: 100vh;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    /* Header */
-    header {
-      text-align: center;
-      margin-bottom: 40px;
-      padding: 40px 0;
-      background: var(--white);
-      border-radius: 16px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-    }
-
-    h1 {
-      color: var(--primary-blue);
-      font-size: 2.5em;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-
-    .subtitle {
-      color: var(--gray-800);
-      font-size: 1.2em;
-      opacity: 0.8;
-    }
-
-    /* Secciones */
-    .section {
-      background: var(--white);
-      padding: 30px;
-      margin-bottom: 30px;
-      border-radius: 16px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-    }
-
-    h2 {
-      color: var(--dark-blue);
-      font-size: 1.8em;
-      margin-bottom: 20px;
-      border-left: 4px solid var(--secondary-green);
-      padding-left: 15px;
-    }
-
-    h3 {
-      color: var(--primary-blue);
-      font-size: 1.3em;
-      margin-bottom: 15px;
-    }
-
-    p {
-      margin-bottom: 15px;
-      text-align: justify;
-    }
-
-    /* Círculo trigonométrico */
-    .unit-circle-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .circle-wrapper {
-      position: relative;
-    }
-
-    #unitCircle {
-      border: 2px solid var(--primary-blue);
-      border-radius: 50%;
-      cursor: crosshair;
-      transition: all 0.2s ease;
-    }
-
-    #unitCircle:hover {
-      box-shadow: 0 0 20px rgba(37, 99, 235, 0.3);
-    }
-
-    .circle-info {
-      background: var(--gray-100);
-      padding: 20px;
-      border-radius: 12px;
-      min-width: 300px;
-    }
-
-    .angle-display {
-      font-size: 1.1em;
-      margin-bottom: 10px;
-    }
-
-    .value-display {
-      font-size: 1.3em;
-      font-weight: 600;
-      margin: 8px 0;
-    }
-
-    .sin-value {
-      color: #ef4444;
-    }
-
-    .cos-value {
-      color: #3b82f6;
-    }
-
-    /* Controles de sliders */
-    .controls {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin: 30px 0;
-    }
-
-    .control-group {
-      background: var(--gray-100);
-      padding: 20px;
-      border-radius: 12px;
-    }
-
-    .control-group label {
-      display: block;
-      font-weight: 600;
-      color: var(--dark-blue);
-      margin-bottom: 8px;
-    }
-
-    .slider {
-      width: 100%;
-      height: 8px;
-      border-radius: 5px;
-      background: var(--gray-200);
-      outline: none;
-      -webkit-appearance: none;
-      margin: 10px 0;
-    }
-
-    .slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--primary-blue);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .slider::-webkit-slider-thumb:hover {
-      background: var(--dark-blue);
-      transform: scale(1.1);
-    }
-
-    .slider::-moz-range-thumb {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--primary-blue);
-      cursor: pointer;
-      border: none;
-    }
-
-    .value-label {
-      font-weight: 600;
-      color: var(--secondary-green);
-    }
-
-    /* Gráficas */
-    .chart-container {
-      position: relative;
-      height: 400px;
-      margin: 20px 0;
-    }
-
-    .charts-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 30px;
-      margin-top: 30px;
-    }
-
-    /* Aplicaciones */
-    .applications {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    .application-card {
-      background: linear-gradient(135deg, var(--light-blue), var(--white));
-      padding: 25px;
-      border-radius: 12px;
-      border-left: 4px solid var(--secondary-green);
-      transition: transform 0.2s ease;
-    }
-
-    .application-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    .application-card h4 {
-      color: var(--primary-blue);
-      margin-bottom: 10px;
-      font-size: 1.2em;
-    }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 30px;
-      background: var(--primary-blue);
-      color: var(--white);
-      border-radius: 16px;
-      margin-top: 40px;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .container {
-        padding: 15px;
-      }
-
-      h1 {
-        font-size: 2em;
-      }
-
-      .section {
-        padding: 20px;
-      }
-
-      .unit-circle-container {
-        flex-direction: column;
-      }
-
-      #unitCircle {
-        width: 280px;
-        height: 280px;
-      }
-
-      .controls {
-        grid-template-columns: 1fr;
-      }
-
-      .charts-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Animaciones */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .section {
-      animation: fadeIn 0.6s ease-out;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="container">
-    <!-- Header -->
-    <header>
-      <h1>Funciones Trigonométricas</h1>
-      <p class="subtitle">Descubre el fascinante mundo de las matemáticas trigonométricas</p>
-    </header>
-
-    <!-- Introducción -->
-    <section class="section">
-      <h2>¿Qué son las Funciones Trigonométricas?</h2>
-      <p>
-        Las funciones trigonométricas son herramientas matemáticas fundamentales que relacionan los ángulos
-        de un triángulo con las proporciones de sus lados. Las tres funciones principales son:
-      </p>
-      <p>
-        <strong>Seno (sin)</strong>: Representa la coordenada vertical de un punto en el círculo unitario.<br>
-        <strong>Coseno (cos)</strong>: Representa la coordenada horizontal de un punto en el círculo unitario.<br>
-        <strong>Tangente (tan)</strong>: Es la razón entre el seno y el coseno de un ángulo.
-      </p>
-      <p>
-        Estas funciones son esenciales en física, ingeniería, astronomía y muchas otras ciencias,
-        ya que describen fenómenos periódicos como ondas, oscilaciones y rotaciones.
-      </p>
-    </section>
-
-    <!-- Círculo Trigonométrico Interactivo -->
-    <section class="section">
-      <h2>Círculo Trigonométrico Interactivo</h2>
-      <p>Haz clic y arrastra sobre el círculo para explorar diferentes ángulos y ver cómo cambian los valores de seno y
-        coseno.</p>
-
-      <div class="unit-circle-container">
-        <div class="circle-wrapper">
-          <canvas id="unitCircle" width="350" height="350"></canvas>
-        </div>
-
-        <div class="circle-info">
-          <div class="angle-display">
-            <strong>Ángulo:</strong> <span id="angleDegrees">0°</span> / <span id="angleRadians">0.00 rad</span>
-          </div>
-          <div class="value-display sin-value">
-            <strong>Seno:</strong> <span id="sinValue">0.00</span>
-          </div>
-          <div class="value-display cos-value">
-            <strong>Coseno:</strong> <span id="cosValue">1.00</span>
-          </div>
-          <div class="value-display">
-            <strong>Tangente:</strong> <span id="tanValue">0.00</span>
-          </div>
-
-          <div style="margin-top: 15px;">
-            <label for="angleSlider">Control del ángulo:</label>
-            <input type="range" id="angleSlider" class="slider" min="0" max="360" value="0">
-            <span class="value-label" id="sliderValue">0°</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Controles para Transformaciones -->
-    <section class="section">
-      <h2>Transformaciones de Funciones Trigonométricas</h2>
-      <p>Experimenta con los parámetros para ver cómo afectan las gráficas de las funciones trigonométricas:</p>
-
-      <div class="controls">
-        <div class="control-group">
-          <label for="amplitudeSlider">Amplitud (A)</label>
-          <input type="range" id="amplitudeSlider" class="slider" min="0.5" max="3" step="0.1" value="1">
-          <span class="value-label" id="amplitudeValue">1.0</span>
-          <p><small>Controla la altura máxima de la función</small></p>
-        </div>
-
-        <div class="control-group">
-          <label for="frequencySlider">Frecuencia (B)</label>
-          <input type="range" id="frequencySlider" class="slider" min="0.5" max="3" step="0.1" value="1">
-          <span class="value-label" id="frequencyValue">1.0</span>
-          <p><small>Controla el número de ciclos por período</small></p>
-        </div>
-
-        <div class="control-group">
-          <label for="phaseSlider">Desplazamiento Horizontal (C)</label>
-          <input type="range" id="phaseSlider" class="slider" min="-3.14" max="3.14" step="0.1" value="0">
-          <span class="value-label" id="phaseValue">0.0</span>
-          <p><small>Mueve la función horizontalmente</small></p>
-        </div>
-
-        <div class="control-group">
-          <label for="verticalSlider">Desplazamiento Vertical (D)</label>
-          <input type="range" id="verticalSlider" class="slider" min="-2" max="2" step="0.1" value="0">
-          <span class="value-label" id="verticalValue">0.0</span>
-          <p><small>Mueve la función verticalmente</small></p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Gráficas -->
-    <section class="section">
-      <h2>Gráficas Interactivas</h2>
-      <p>Observa cómo cambian las gráficas al modificar los parámetros arriba:</p>
-
-      <div class="charts-grid">
-        <div>
-          <h3>Función Seno</h3>
-          <div class="chart-container">
-            <canvas id="sineChart"></canvas>
-          </div>
-        </div>
-
-        <div>
-          <h3>Función Coseno</h3>
-          <div class="chart-container">
-            <canvas id="cosineChart"></canvas>
-          </div>
-        </div>
-
-        <div>
-          <h3>Función Tangente</h3>
-          <div class="chart-container">
-            <canvas id="tangentChart"></canvas>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Aplicaciones -->
-    <section class="section">
-      <h2>Aplicaciones en la Vida Real</h2>
-      <div class="applications">
-        <div class="application-card">
-          <h4>🌊 Ondas y Sonido</h4>
-          <p>
-            Las funciones trigonométricas modelan las ondas sonoras, desde la música que escuchamos
-            hasta el sonar utilizado por los murciélagos. La amplitud determina el volumen,
-            mientras que la frecuencia determina el tono.
-          </p>
-        </div>
-
-        <div class="application-card">
-          <h4>🌙 Mareas Oceánicas</h4>
-          <p>
-            El movimiento de las mareas sigue patrones sinusoidales predecibles. Los navegantes
-            y pescadores utilizan estas funciones para planificar sus actividades según
-            los ciclos de marea alta y baja.
-          </p>
-        </div>
-
-        <div class="application-card">
-          <h4>⚡ Electricidad</h4>
-          <p>
-            La corriente alterna (AC) que alimenta nuestros hogares sigue una función sinusoidal.
-            Los ingenieros eléctricos utilizan estas funciones para diseñar sistemas de distribución
-            de energía eficientes.
-          </p>
-        </div>
-
-        <div class="application-card">
-          <h4>🛰️ Navegación GPS</h4>
-          <p>
-            Los sistemas de posicionamiento global utilizan funciones trigonométricas para
-            calcular distancias y ubicaciones precisas mediante la triangulación de señales
-            de múltiples satélites.
-          </p>
-        </div>
-
-        <div class="application-card">
-          <h4>🎢 Ingeniería Civil</h4>
-          <p>
-            En la construcción de puentes y montañas rusas, las funciones trigonométricas
-            ayudan a calcular las fuerzas, tensiones y movimientos que deben soportar
-            las estructuras.
-          </p>
-        </div>
-
-        <div class="application-card">
-          <h4>🩺 Medicina</h4>
-          <p>
-            Los electrocardiogramas (ECG) y otros equipos médicos utilizan análisis trigonométrico
-            para interpretar señales biológicas periódicas como los latidos del corazón
-            y las ondas cerebrales.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Conclusión -->
-    <section class="section">
-      <h2>Conclusión</h2>
-      <p>
-        Las funciones trigonométricas son mucho más que conceptos matemáticos abstractos.
-        Son herramientas poderosas que nos ayudan a entender y modelar el mundo que nos rodea,
-        desde las ondas del océano hasta la música que disfrutamos.
-      </p>
-      <p>
-        Al dominar estas funciones y sus transformaciones, abres la puerta a campos fascinantes
-        como la física, la ingeniería, la música, la astronomía y muchas otras disciplinas.
-        ¡Sigue explorando y experimentando con los controles interactivos para profundizar
-        tu comprensión!
-      </p>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-      <h3>¡Sigue Aprendiendo!</h3>
-      <p>Las matemáticas están en todas partes. Explora, experimenta y descubre las maravillas de la trigonometría.</p>
-    </footer>
-  </div>
-
-  <script>
-    // Variables globales para las gráficas
-    let sineChart, cosineChart, tangentChart;
-
-    // Variables para el círculo unitario
-    let canvas, ctx;
-    let currentAngle = 0;
-
-    // Parámetros de transformación
-    let amplitude = 1;
-    let frequency = 1;
-    let phase = 0;
-    let verticalShift = 0;
-
-    // Inicialización cuando se carga la página
-    document.addEventListener('DOMContentLoaded', function () {
-      initializeUnitCircle();
-      initializeCharts();
-      setupSliders();
-      updateAllDisplays();
-    });
-
-    // === CÍRCULO UNITARIO ===
-    function initializeUnitCircle() {
-      canvas = document.getElementById('unitCircle');
-      ctx = canvas.getContext('2d');
-
-      // Eventos del mouse para el círculo
-      canvas.addEventListener('mousedown', startDragging);
-      canvas.addEventListener('mousemove', drag);
-      canvas.addEventListener('mouseup', stopDragging);
-
-      // Variables para el arrastre
-      let isDragging = false;
-
-      function startDragging(e) {
-        isDragging = true;
-        updateAngleFromMouse(e);
-      }
-
-      function drag(e) {
-        if (isDragging) {
-          updateAngleFromMouse(e);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patrones Matemáticos Interactivos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-      }
 
-      function stopDragging() {
-        isDragging = false;
-      }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
 
-      function updateAngleFromMouse(e) {
-        const rect = canvas.getBoundingClientRect();
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height / 2;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-        // Calcular posición del mouse relativa al centro
-        const mouseX = e.clientX - rect.left - centerX;
-        const mouseY = e.clientY - rect.top - centerY;
+        .header {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
 
-        // Calcular ángulo (invertir Y para que 0° esté arriba)
-        let angle = Math.atan2(-mouseY, mouseX);
-        if (angle < 0) angle += 2 * Math.PI;
+        .header h1 {
+            color: #4a5568;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
 
-        // Convertir a grados
-        currentAngle = (angle * 180 / Math.PI);
+        .header p {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
 
-        // Actualizar slider y displays
-        document.getElementById('angleSlider').value = currentAngle;
-        updateAllDisplays();
-      }
+        .intro-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
 
-      drawUnitCircle();
-    }
+        .example {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #4299e1;
+        }
 
-    function drawUnitCircle() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+        .example h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
 
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      const radius = 140;
+        .example-pattern {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4299e1;
+            margin: 10px 0;
+        }
 
-      // Dibujar ejes
-      ctx.strokeStyle = '#e5e7eb';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      // Eje X
-      ctx.moveTo(20, centerY);
-      ctx.lineTo(canvas.width - 20, centerY);
-      // Eje Y
-      ctx.moveTo(centerX, 20);
-      ctx.lineTo(centerX, canvas.height - 20);
-      ctx.stroke();
+        .interactive-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
 
-      // Dibujar círculo unitario
-      ctx.strokeStyle = '#2563eb';
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-      ctx.stroke();
+        .section-title {
+            font-size: 1.8rem;
+            color: #2d3748;
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
-      // Convertir ángulo a radianes
-      const angleRad = currentAngle * Math.PI / 180;
+        .pattern-type {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            background: #f8fafc;
+        }
 
-      // Calcular posición del punto
-      const pointX = centerX + radius * Math.cos(angleRad);
-      const pointY = centerY - radius * Math.sin(angleRad); // Negativo porque Y crece hacia abajo
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
 
-      // Dibujar líneas del seno y coseno
-      ctx.strokeStyle = '#ef4444';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(pointX, centerY);
-      ctx.lineTo(pointX, pointY);
-      ctx.stroke();
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-      ctx.strokeStyle = '#3b82f6';
-      ctx.beginPath();
-      ctx.moveTo(centerX, centerY);
-      ctx.lineTo(pointX, centerY);
-      ctx.stroke();
+        .control-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #4a5568;
+        }
 
-      // Dibujar línea del radio
-      ctx.strokeStyle = '#10b981';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(centerX, centerY);
-      ctx.lineTo(pointX, pointY);
-      ctx.stroke();
+        .slider {
+            width: 150px;
+            height: 6px;
+            border-radius: 5px;
+            background: #e2e8f0;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
 
-      // Dibujar punto
-      ctx.fillStyle = '#1f2937';
-      ctx.beginPath();
-      ctx.arc(pointX, pointY, 6, 0, 2 * Math.PI);
-      ctx.fill();
+        .slider:hover {
+            opacity: 1;
+        }
 
-      // Etiquetas de los ejes
-      ctx.fillStyle = '#6b7280';
-      ctx.font = '14px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('1', centerX + radius + 15, centerY + 5);
-      ctx.fillText('-1', centerX - radius - 15, centerY + 5);
-      ctx.fillText('1', centerX, centerY - radius - 10);
-      ctx.fillText('-1', centerX, centerY + radius + 20);
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #4299e1;
+            cursor: pointer;
+        }
 
-      // Etiquetas de valores
-      ctx.fillStyle = '#ef4444';
-      ctx.fillText('sen', pointX + 15, (centerY + pointY) / 2);
-      ctx.fillStyle = '#3b82f6';
-      ctx.fillText('cos', (centerX + pointX) / 2, centerY - 10);
-    }
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #4299e1;
+            cursor: pointer;
+            border: none;
+        }
 
-    // === CONFIGURACIÓN DE SLIDERS ===
-    function setupSliders() {
-      // Slider del ángulo
-      const angleSlider = document.getElementById('angleSlider');
-      angleSlider.addEventListener('input', function () {
-        currentAngle = parseFloat(this.value);
-        updateAllDisplays();
-      });
+        .value-display {
+            background: #4299e1;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
 
-      // Sliders de transformación
-      const amplitudeSlider = document.getElementById('amplitudeSlider');
-      amplitudeSlider.addEventListener('input', function () {
-        amplitude = parseFloat(this.value);
-        document.getElementById('amplitudeValue').textContent = amplitude.toFixed(1);
-        updateCharts();
-      });
+        .pattern-display {
+            min-height: 100px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-      const frequencySlider = document.getElementById('frequencySlider');
-      frequencySlider.addEventListener('input', function () {
-        frequency = parseFloat(this.value);
-        document.getElementById('frequencyValue').textContent = frequency.toFixed(1);
-        updateCharts();
-      });
+        .number-item {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            animation: fadeInScale 0.5s ease-out;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
 
-      const phaseSlider = document.getElementById('phaseSlider');
-      phaseSlider.addEventListener('input', function () {
-        phase = parseFloat(this.value);
-        document.getElementById('phaseValue').textContent = phase.toFixed(1);
-        updateCharts();
-      });
+        .shape-item {
+            animation: fadeInScale 0.5s ease-out;
+            margin: 5px;
+        }
 
-      const verticalSlider = document.getElementById('verticalSlider');
-      verticalSlider.addEventListener('input', function () {
-        verticalShift = parseFloat(this.value);
-        document.getElementById('verticalValue').textContent = verticalShift.toFixed(1);
-        updateCharts();
-      });
-    }
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 35px solid;
+        }
 
-    // === ACTUALIZACIÓN DE DISPLAYS ===
-    function updateAllDisplays() {
-      // Actualizar círculo trigonométrico
-      drawUnitCircle();
+        .square {
+            border-radius: 8px;
+        }
 
-      // Calcular valores trigonométricos
-      const angleRad = currentAngle * Math.PI / 180;
-      const sinValue = Math.sin(angleRad);
-      const cosValue = Math.cos(angleRad);
-      const tanValue = Math.tan(angleRad);
+        .circle {
+            border-radius: 50%;
+        }
 
-      // Actualizar displays de texto
-      document.getElementById('angleDegrees').textContent = currentAngle.toFixed(0) + '°';
-      document.getElementById('angleRadians').textContent = angleRad.toFixed(2) + ' rad';
-      document.getElementById('sinValue').textContent = sinValue.toFixed(3);
-      document.getElementById('cosValue').textContent = cosValue.toFixed(3);
-      document.getElementById('tanValue').textContent = isFinite(tanValue) ? tanValue.toFixed(3) : '∞';
-      document.getElementById('sliderValue').textContent = currentAngle.toFixed(0) + '°';
-    }
+        .step-indicator {
+            text-align: center;
+            margin: 15px 0;
+            font-weight: bold;
+            color: #4a5568;
+        }
 
-    // === INICIALIZACIÓN DE GRÁFICAS ===
-    function initializeCharts() {
-      const chartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false
-          }
-        },
-        scales: {
-          x: {
-            type: 'linear',
-            position: 'center',
-            min: -2 * Math.PI,
-            max: 2 * Math.PI,
-            ticks: {
-              stepSize: Math.PI / 2,
-              callback: function (value) {
-                if (value === -2 * Math.PI) return '-2π';
-                if (value === -Math.PI) return '-π';
-                if (value === -Math.PI / 2) return '-π/2';
-                if (value === 0) return '0';
-                if (value === Math.PI / 2) return 'π/2';
-                if (value === Math.PI) return 'π';
-                if (value === 2 * Math.PI) return '2π';
-                return '';
-              }
+        .rule-explanation {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .rule-explanation strong {
+            color: #234e52;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
             }
-          },
-          y: {
-            type: 'linear',
-            position: 'center',
-            min: -3,
-            max: 3
-          }
-        },
-        elements: {
-          point: {
-            radius: 0
-          }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
-      };
 
-      // Gráfica del seno
-      const sineCtx = document.getElementById('sineChart').getContext('2d');
-      sineChart = new Chart(sineCtx, {
-        type: 'line',
-        data: {
-          datasets: [{
-            label: 'Seno',
-            borderColor: '#ef4444',
-            backgroundColor: 'rgba(239, 68, 68, 0.1)',
-            borderWidth: 3,
-            data: []
-          }]
-        },
-        options: chartOptions
-      });
-
-      // Gráfica del coseno
-      const cosineCtx = document.getElementById('cosineChart').getContext('2d');
-      cosineChart = new Chart(cosineCtx, {
-        type: 'line',
-        data: {
-          datasets: [{
-            label: 'Coseno',
-            borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-            borderWidth: 3,
-            data: []
-          }]
-        },
-        options: chartOptions
-      });
-
-      // Gráfica de la tangente (con límites especiales)
-      const tangentCtx = document.getElementById('tangentChart').getContext('2d');
-      const tangentOptions = {...chartOptions};
-      tangentOptions.scales.y.min = -5;
-      tangentOptions.scales.y.max = 5;
-
-      tangentChart = new Chart(tangentCtx, {
-        type: 'line',
-        data: {
-          datasets: [{
-            label: 'Tangente',
-            borderColor: '#10b981',
-            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-            borderWidth: 3,
-            data: []
-          }]
-        },
-        options: tangentOptions
-      });
-
-      updateCharts();
-    }
-
-    // === ACTUALIZACIÓN DE GRÁFICAS ===
-    function updateCharts() {
-      const step = 0.1;
-      const start = -2 * Math.PI;
-      const end = 2 * Math.PI;
-
-      // Generar datos para seno
-      const sineData = [];
-      for (let x = start; x <= end; x += step) {
-        const y = amplitude * Math.sin(frequency * x + phase) + verticalShift;
-        sineData.push({x: x, y: y});
-      }
-
-      // Generar datos para coseno
-      const cosineData = [];
-      for (let x = start; x <= end; x += step) {
-        const y = amplitude * Math.cos(frequency * x + phase) + verticalShift;
-        cosineData.push({x: x, y: y});
-      }
-
-      // Generar datos para tangente (con manejo de asíntotas)
-      const tangentData = [];
-      for (let x = start; x <= end; x += step) {
-        const tanValue = amplitude * Math.tan(frequency * x + phase) + verticalShift;
-
-        // Evitar valores infinitos cerca de las asíntotas
-        if (Math.abs(tanValue) < 10) {
-          tangentData.push({x: x, y: tanValue});
-        } else {
-          // Crear una discontinuidad en la gráfica
-          tangentData.push({x: x, y: null});
+        .pattern-animation {
+            animation: pulse 2s infinite;
         }
-      }
 
-      // Actualizar las gráficas
-      sineChart.data.datasets[0].data = sineData;
-      sineChart.update('none');
-
-      cosineChart.data.datasets[0].data = cosineData;
-      cosineChart.update('none');
-
-      tangentChart.data.datasets[0].data = tangentData;
-      tangentChart.update('none');
-    }
-
-    // === FUNCIONES DE UTILIDAD ===
-
-    // Formatear números para mostrar
-    function formatNumber(num, decimals = 2) {
-      return Number(num).toFixed(decimals);
-    }
-
-    // Convertir radianes a grados
-    function radToDeg(rad) {
-      return rad * 180 / Math.PI;
-    }
-
-    // Convertir grados a radianes
-    function degToRad(deg) {
-      return deg * Math.PI / 180;
-    }
-
-    // Función para animar el ángulo (opcional - se puede usar para demostraciones)
-    function animateAngle(targetAngle, duration = 1000) {
-      const startAngle = currentAngle;
-      const startTime = performance.now();
-
-      function animate(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-
-        // Usar easing suave
-        const easeProgress = 1 - Math.cos(progress * Math.PI / 2);
-
-        currentAngle = startAngle + (targetAngle - startAngle) * easeProgress;
-
-        // Actualizar slider y displays
-        document.getElementById('angleSlider').value = currentAngle;
-        updateAllDisplays();
-
-        if (progress < 1) {
-          requestAnimationFrame(animate);
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
-      }
 
-      requestAnimationFrame(animate);
-    }
-
-    // Agregar algunos ángulos especiales como botones de acceso rápido
-    function addQuickAngleButtons() {
-      const specialAngles = [
-        {name: '0°', value: 0},
-        {name: '30°', value: 30},
-        {name: '45°', value: 45},
-        {name: '60°', value: 60},
-        {name: '90°', value: 90},
-        {name: '180°', value: 180},
-        {name: '270°', value: 270}
-      ];
-
-      // Esta función se puede usar para agregar botones de ángulos especiales
-      // en futuras versiones de la página
-    }
-
-    // === EVENTOS ADICIONALES ===
-
-    // Manejo de eventos de teclado para controles más precisos
-    document.addEventListener('keydown', function (e) {
-      if (e.target.tagName.toLowerCase() === 'input') {
-        return; // No interferir con la entrada en sliders
-      }
-
-      switch (e.key) {
-        case 'ArrowLeft':
-          currentAngle = (currentAngle - 5 + 360) % 360;
-          document.getElementById('angleSlider').value = currentAngle;
-          updateAllDisplays();
-          e.preventDefault();
-          break;
-        case 'ArrowRight':
-          currentAngle = (currentAngle + 5) % 360;
-          document.getElementById('angleSlider').value = currentAngle;
-          updateAllDisplays();
-          e.preventDefault();
-          break;
-      }
-    });
-
-    // Soporte para dispositivos táctiles
-    canvas.addEventListener('touchstart', function (e) {
-      e.preventDefault();
-      const touch = e.touches[0];
-      const mouseEvent = new MouseEvent('mousedown', {
-        clientX: touch.clientX,
-        clientY: touch.clientY
-      });
-      canvas.dispatchEvent(mouseEvent);
-    });
-
-    canvas.addEventListener('touchmove', function (e) {
-      e.preventDefault();
-      const touch = e.touches[0];
-      const mouseEvent = new MouseEvent('mousemove', {
-        clientX: touch.clientX,
-        clientY: touch.clientY
-      });
-      canvas.dispatchEvent(mouseEvent);
-    });
-
-    canvas.addEventListener('touchend', function (e) {
-      e.preventDefault();
-      const mouseEvent = new MouseEvent('mouseup', {});
-      canvas.dispatchEvent(mouseEvent);
-    });
-
-    // Optimización de rendimiento - throttle para actualizaciones de gráficas
-    function throttle(func, limit) {
-      let inThrottle;
-      return function () {
-        const args = arguments;
-        const context = this;
-        if (!inThrottle) {
-          func.apply(context, args);
-          inThrottle = true;
-          setTimeout(() => inThrottle = false, limit);
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .controls {
+                justify-content: center;
+            }
+            
+            .pattern-display {
+                min-height: 80px;
+                padding: 15px;
+            }
+            
+            .number-item {
+                font-size: 1rem;
+                padding: 8px 12px;
+            }
         }
-      }
-    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Patrones Matemáticos</h1>
+            <p>Descubre las regularidades en números y figuras de forma interactiva</p>
+            
+            <div class="intro-examples">
+                <div class="example">
+                    <h3>Patrón Numérico</h3>
+                    <p>Los números siguen una regla fija</p>
+                    <div class="example-pattern">2, 4, 6, 8, 10...</div>
+                    <p><strong>Regla:</strong> Sumar 2 cada vez</p>
+                </div>
+                
+                <div class="example">
+                    <h3>Patrón Geométrico</h3>
+                    <p>Las figuras se repiten o crecen</p>
+                    <div class="example-pattern">▲ ● ▲ ● ▲ ●</div>
+                    <p><strong>Regla:</strong> Alternar triángulo y círculo</p>
+                </div>
+            </div>
+        </div>
 
-    // Aplicar throttling a las actualizaciones de gráficas para mejor rendimiento
-    const throttledUpdateCharts = throttle(updateCharts, 50);
+        <div class="interactive-section">
+            <h2 class="section-title">Explora Patrones Numéricos</h2>
+            
+            <div class="pattern-type">
+                <h3>Secuencias Aritméticas</h3>
+                <p>Cada término se obtiene sumando un valor fijo al anterior</p>
+                
+                <div class="controls">
+                    <div class="control-group">
+                        <label>Primer número:</label>
+                        <input type="range" class="slider" id="startNum" min="1" max="20" value="2">
+                        <div class="value-display" id="startNumValue">2</div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Sumar cada vez:</label>
+                        <input type="range" class="slider" id="stepNum" min="1" max="10" value="3">
+                        <div class="value-display" id="stepNumValue">3</div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Cantidad de términos:</label>
+                        <input type="range" class="slider" id="countNum" min="3" max="15" value="8">
+                        <div class="value-display" id="countNumValue">8</div>
+                    </div>
+                </div>
+                
+                <div class="rule-explanation" id="numericRule">
+                    <strong>Regla actual:</strong> Empezar en 2, sumar 3 cada vez
+                </div>
+                
+                <div class="pattern-display" id="numericPattern"></div>
+                
+                <div class="step-indicator" id="numericStep"></div>
+            </div>
+        </div>
 
-    // Mensaje de bienvenida en consola para desarrolladores
-    console.log(`
-        🎓 Página Educativa de Funciones Trigonométricas
-        ===============================================
-        
-        Esta página fue creada para enseñar conceptos de trigonometría
-        de manera interactiva y visual.
-        
-        Características:
-        • Círculo trigonométrico interactivo
-        • Gráficas dinámicas con Chart.js
-        • Controles deslizantes para transformaciones
-        • Diseño responsivo y accesible
-        • Ejemplos de aplicaciones en la vida real
-        
-        ¡Explora y aprende matemáticas!
-        `);
-  </script>
+        <div class="interactive-section">
+            <h2 class="section-title">Explora Patrones Geométricos</h2>
+            
+            <div class="pattern-type">
+                <h3>Secuencias de Figuras</h3>
+                <p>Las figuras siguen un patrón de repetición o crecimiento</p>
+                
+                <div class="controls">
+                    <div class="control-group">
+                        <label>Tipo de patrón:</label>
+                        <select id="shapeType" style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                            <option value="alternating">Alternado</option>
+                            <option value="growing">Creciente</option>
+                            <option value="repeating">Repetición de 3</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Tamaño base:</label>
+                        <input type="range" class="slider" id="shapeSize" min="20" max="60" value="30">
+                        <div class="value-display" id="shapeSizeValue">30</div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Cantidad de figuras:</label>
+                        <input type="range" class="slider" id="shapeCount" min="4" max="20" value="12">
+                        <div class="value-display" id="shapeCountValue">12</div>
+                    </div>
+                </div>
+                
+                <div class="rule-explanation" id="geometricRule">
+                    <strong>Regla actual:</strong> Alternar entre triángulo y círculo
+                </div>
+                
+                <div class="pattern-display" id="geometricPattern"></div>
+                
+                <div class="step-indicator" id="geometricStep"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Elementos del DOM
+        const startNumSlider = document.getElementById('startNum');
+        const stepNumSlider = document.getElementById('stepNum');
+        const countNumSlider = document.getElementById('countNum');
+        const startNumValue = document.getElementById('startNumValue');
+        const stepNumValue = document.getElementById('stepNumValue');
+        const countNumValue = document.getElementById('countNumValue');
+        const numericPattern = document.getElementById('numericPattern');
+        const numericRule = document.getElementById('numericRule');
+        const numericStep = document.getElementById('numericStep');
+
+        const shapeTypeSelect = document.getElementById('shapeType');
+        const shapeSizeSlider = document.getElementById('shapeSize');
+        const shapeCountSlider = document.getElementById('shapeCount');
+        const shapeSizeValue = document.getElementById('shapeSizeValue');
+        const shapeCountValue = document.getElementById('shapeCountValue');
+        const geometricPattern = document.getElementById('geometricPattern');
+        const geometricRule = document.getElementById('geometricRule');
+        const geometricStep = document.getElementById('geometricStep');
+
+        // Colores para las figuras
+        const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57', '#FF9FF3', '#54A0FF'];
+
+        // Función para generar patrón numérico
+        function generateNumericPattern() {
+            const start = parseInt(startNumSlider.value);
+            const step = parseInt(stepNumSlider.value);
+            const count = parseInt(countNumSlider.value);
+
+            // Actualizar valores mostrados
+            startNumValue.textContent = start;
+            stepNumValue.textContent = step;
+            countNumValue.textContent = count;
+
+            // Actualizar regla
+            numericRule.innerHTML = `<strong>Regla actual:</strong> Empezar en ${start}, sumar ${step} cada vez`;
+
+            // Limpiar patrón anterior
+            numericPattern.innerHTML = '';
+
+            // Generar secuencia
+            for (let i = 0; i < count; i++) {
+                const value = start + (i * step);
+                const numberElement = document.createElement('div');
+                numberElement.className = 'number-item';
+                numberElement.textContent = value;
+                numberElement.style.animationDelay = `${i * 0.1}s`;
+                numericPattern.appendChild(numberElement);
+
+                // Pequeña pausa para la animación
+                setTimeout(() => {
+                    numberElement.classList.add('pattern-animation');
+                }, i * 100);
+            }
+
+            // Mostrar paso de crecimiento
+            numericStep.textContent = `Paso de crecimiento: +${step} en cada término`;
+        }
+
+        // Función para generar patrón geométrico
+        function generateGeometricPattern() {
+            const type = shapeTypeSelect.value;
+            const size = parseInt(shapeSizeSlider.value);
+            const count = parseInt(shapeCountSlider.value);
+
+            // Actualizar valores mostrados
+            shapeSizeValue.textContent = size;
+            shapeCountValue.textContent = count;
+
+            // Limpiar patrón anterior
+            geometricPattern.innerHTML = '';
+
+            let ruleText = '';
+            let stepText = '';
+
+            for (let i = 0; i < count; i++) {
+                const shapeElement = document.createElement('div');
+                shapeElement.className = 'shape-item';
+                shapeElement.style.animationDelay = `${i * 0.1}s`;
+
+                if (type === 'alternating') {
+                    // Alternar triángulo y círculo
+                    if (i % 2 === 0) {
+                        shapeElement.innerHTML = `<div class="triangle" style="border-bottom-color: ${colors[i % colors.length]}; transform: scale(${size/30});"></div>`;
+                    } else {
+                        shapeElement.innerHTML = `<div class="circle" style="width: ${size}px; height: ${size}px; background: ${colors[i % colors.length]};"></div>`;
+                    }
+                    ruleText = 'Alternar entre triángulo y círculo con colores diferentes';
+                    stepText = 'Patrón: ▲ ● ▲ ● ...';
+                } else if (type === 'growing') {
+                    // Cuadrados que crecen
+                    const currentSize = size + (i * 5);
+                    shapeElement.innerHTML = `<div class="square" style="width: ${currentSize}px; height: ${currentSize}px; background: ${colors[i % colors.length]};"></div>`;
+                    ruleText = 'Cuadrados que aumentan de tamaño progresivamente';
+                    stepText = `Crecimiento: +5px en cada figura`;
+                } else if (type === 'repeating') {
+                    // Repetir secuencia de 3
+                    const shapes = ['triangle', 'circle', 'square'];
+                    const shapeType = shapes[i % 3];
+                    const color = colors[Math.floor(i/3) % colors.length];
+                    
+                    if (shapeType === 'triangle') {
+                        shapeElement.innerHTML = `<div class="triangle" style="border-bottom-color: ${color}; transform: scale(${size/30});"></div>`;
+                    } else if (shapeType === 'circle') {
+                        shapeElement.innerHTML = `<div class="circle" style="width: ${size}px; height: ${size}px; background: ${color};"></div>`;
+                    } else {
+                        shapeElement.innerHTML = `<div class="square" style="width: ${size}px; height: ${size}px; background: ${color};"></div>`;
+                    }
+                    ruleText = 'Repetir secuencia: triángulo, círculo, cuadrado';
+                    stepText = 'Patrón: ▲ ● ■ ▲ ● ■ ...';
+                }
+
+                geometricPattern.appendChild(shapeElement);
+
+                // Pequeña pausa para la animación
+                setTimeout(() => {
+                    shapeElement.classList.add('pattern-animation');
+                }, i * 100);
+            }
+
+            // Actualizar regla y paso
+            geometricRule.innerHTML = `<strong>Regla actual:</strong> ${ruleText}`;
+            geometricStep.textContent = stepText;
+        }
+
+        // Event listeners para patrones numéricos
+        startNumSlider.addEventListener('input', generateNumericPattern);
+        stepNumSlider.addEventListener('input', generateNumericPattern);
+        countNumSlider.addEventListener('input', generateNumericPattern);
+
+        // Event listeners para patrones geométricos
+        shapeTypeSelect.addEventListener('change', generateGeometricPattern);
+        shapeSizeSlider.addEventListener('input', generateGeometricPattern);
+        shapeCountSlider.addEventListener('input', generateGeometricPattern);
+
+        // Generar patrones iniciales
+        generateNumericPattern();
+        generateGeometricPattern();
+    </script>
 </body>
-
 </html>
